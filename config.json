@@ -1,0 +1,7 @@
+{
+    "minecraftdir": "/media/local/Minecraft",
+    "worldname": "snapshot",
+    "singleplayer": false,
+    "autobackup": false,
+    "autobackupdelay": 300.0
+}
