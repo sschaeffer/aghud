@@ -45,7 +45,7 @@ class ServerQuery:
         return self._connected
 
     def write_packet(self, type, payload):
-        o = bytes('\xFE\xFD','utf-8') + struct.pack('>B', type) + struct.pack('>l', self.id) + bytes(payload,'utf-8')
+        o = b'\xfe\xfd' + struct.pack('>B', type) + struct.pack('>l', self.id) + bytes(payload,'utf-8')
         self.socket.sendto(o, self.addr)
     
     def read_packet(self):
