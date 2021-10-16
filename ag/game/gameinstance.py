@@ -4,7 +4,7 @@ path.append("/home/integ/Code/aghud")
 
 from ag.common.aghudconstants import AGHUDConstants
 from ag.common.aghudconfig import AGHUDConfig
-from ag.game.gamequery import GameQuery
+from ag.game.serverquery import ServerQuery
 
 #from ag.game.gamequery import GameQuery
 #from bc.game.bclevelfile import BCLevelFile
@@ -37,7 +37,7 @@ class GameInstance():
         self.set_servername(worldname)
         self.set_singleplayer(singleplayer)
 
-        self._game_query = None
+        self._server_query = ServerQuery()
         self._game_port = 0
         self._game_status = AGHUDConstants.GAME_STARTING
 
@@ -107,22 +107,8 @@ class GameInstance():
                 if self._singleplayer:
                     self._game_status = AGHUDConstants.GAME_RUNNING
                 else:
-                    if self._game_port == 0:
-                        serverproperties_path=Path(f"{self._minecraftdir}/server/{self._servername}/server.properties")
-                        if serverproperties_path.is_file():
-                            with open(serverproperties_path) as f:
-                                line  = f.readline()
-                                while line and self._game_port == 0:
-                                    if line[0] != '#':
-                                        key, value = line.split('=')
-                                        print(f"Key {key} Value {value}")
-                                        if key == "query.port":
-                                            print(f"Value {value}")
-                                            self._game_port = int(value)
-                                    line  = f.readline()
-                    if self._game_port != 0:
-                        self._game_query = GameQuery("localhost", self._game_port)
-
+                    if not self._server_query.is_connected():
+                        self._server_query.connect(self._minecraftdir, self._servername)
 
             else:
                 if self._game_status !=  AGHUDConstants.GAME_STARTING: self._game_status = AGHUDConstants.GAME_RESET

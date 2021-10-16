@@ -1,14 +1,19 @@
 import socket
 import struct
+from pathlib import Path
 
-class GameQuery:
+class ServerQuery:
     id = 0
     retries = 0
     max_retries = 1
     timeout = 2
+    _port = 0
+    _host = "localhost"
+    _connected = False
     
-    def __init__(self, host, port, **kargs):
-        self.addr = (host, port)
+    def __init__(self, **kargs):
+
+        self.addr = (self._host, self._port)
         if 'max_retries' in kargs:
             self.max_retries = kargs['max_retries']
         if 'timeout' in kargs:
@@ -16,8 +21,29 @@ class GameQuery:
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.settimeout(self.timeout)
-        self.handshake()
-    
+
+
+    def connect(self, minecraftdir, servername):
+
+        serverproperties_path=Path(f"{minecraftdir}/server/{servername}/server.properties")
+        if serverproperties_path.is_file():
+            with open(serverproperties_path) as f:
+                line  = f.readline()
+                while line and self._port == 0:
+                    if line[0] != '#':
+                        key, value = line.split('=')
+                        print(f"Key {key} Value {value}")
+                        if key == "query.port":
+                            print(f"Value {value}")
+                            self._port = int(value)
+                    line  = f.readline()
+                if self._port != 0:
+                    self.addr = (self._host, self._port)
+                    self.handshake()
+
+    def is_connected(self):
+        return self._connected
+
     def write_packet(self, type, payload):
         o = bytes('\xFE\xFD','utf-8') + struct.pack('>B', type) + struct.pack('>l', self.id) + bytes(payload,'utf-8')
         self.socket.sendto(o, self.addr)
@@ -30,13 +56,15 @@ class GameQuery:
     
     def handshake(self):
         self.id += 1
+        self.retries=0
         self.write_packet(9, '')
         try:
             type, id, buff = self.read_packet()
         except:
             self.retries += 1
-            if self.retries == self.max_retries:
+            if self.retries >= self.max_retries:
                 #raise Exception('Retry limit reached - server down?')
+                print("server down?")
                 return 0 
             return self.handshake()
         
