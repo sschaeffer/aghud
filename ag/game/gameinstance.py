@@ -149,7 +149,7 @@ class GameInstance():
 
     def backup_world(self):
 
-        if Path(f"{self._minecraftdir}/saves").is_dir():
+        if Path(f"{self._minecraftdir}/saves").is_dir() and Path(f"{self._minecraftdir}/backups").is_dir():
             currentdir = getcwd()
             expanded_minecraftdir=self._minecraftdir.replace(' ','\ ')
             expanded_worldname=self._worldname.replace(' ','\ ')
@@ -160,6 +160,7 @@ class GameInstance():
 
             call(command_line,stdout=fstdout,stderr=subprocess.DEVNULL)
             chdir(currentdir)
+
 # ----
 # UNIT TESTING ROUTINES - REMOVE BEFORE DEPLOYING RELEASE
 # ----
