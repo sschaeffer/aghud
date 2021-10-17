@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import subprocess
 from sys import path
 path.append("/home/integ/Code/aghud")
 
@@ -13,8 +14,9 @@ from ag.game.serverquery import ServerQuery
 #from bc.game.bclog import BCLog
 
 from time import sleep, time
-from subprocess import run 
+from subprocess import call 
 from pathlib import Path
+from os import chdir, getcwd
 
 class GameInstance():
 
@@ -47,7 +49,7 @@ class GameInstance():
         self.set_autoupdatedelay(autoupdatedelay)
 
         self._last_update = 0.0
-        self._last_backup = 0.0
+        self._last_backup = time()
 
     def set_minecraftdir(self, minecraftdir):
         self._minecraftdir = minecraftdir
@@ -91,8 +93,12 @@ class GameInstance():
         self._last_update = time()
 
     def backup(self):
-        self._last_backup = time()
-
+        self.update_game_status()
+        if self._game_status == AGHUDConstants.GAME_RUNNING_SINGLE_PLAYER or self._game_status == AGHUDConstants.GAME_RUNNING:
+            self.backup_world()
+            self._last_backup = time()
+        if self._game_status == AGHUDConstants.GAME_STARTING or self._game_status == AGHUDConstants.GAME_RESET:
+            self._last_backup = time()
  
     def update_game_status(self):
         """
@@ -104,18 +110,56 @@ class GameInstance():
             levelfile_path=Path(f"{self._minecraftdir}/saves/{self._worldname}/level.dat")
             if(levelfile_path.is_file()):
                 print(f"{levelfile_path} is a file")
+                ###
+                ### TODO: Check the last update of the level file to see if the game is paused (singleplayer) AGHUD LEVEL
+                ###
+                ###
+                ### TODO: Check the log file for the last entry into the log file AGHUD LOG
+                ###
                 if self._singleplayer:
-                    self._game_status = AGHUDConstants.GAME_RUNNING
+                    self._game_status = AGHUDConstants.GAME_RUNNING_SINGLE_PLAYER
                 else:
-                    if not self._server_query.is_connected():
-                        self._server_query.connect(self._minecraftdir, self._servername)
-
+                    self._server_query.test_connection(self._minecraftdir, self._servername)
+                    if self._server_query.is_connected():
+                        if self._server_query.number_players() > 0:
+                            self._game_status = AGHUDConstants.GAME_RUNNING
+                        else:
+                            self._game_status = AGHUDConstants.GAME_RUNNING_NO_PLAYERS
+                    else:
+                        self._game_status = AGHUDConstants.GAME_STOPPED
             else:
                 if self._game_status !=  AGHUDConstants.GAME_STARTING: self._game_status = AGHUDConstants.GAME_RESET
         else:
             print(f"{self._minecraftdir}/saves/{self._worldname} is not a directory")
             if self._game_status !=  AGHUDConstants.GAME_STARTING: self._game_status = AGHUDConstants.GAME_RESET
 
+    def game_status(self):
+        if self._game_status == AGHUDConstants.GAME_STARTING:
+            print("Game Starting")
+        elif self._game_status == AGHUDConstants.GAME_RUNNING:
+            print("Game Running")
+        elif self._game_status == AGHUDConstants.GAME_RUNNING_NO_PLAYERS:
+            print("Game Running with No Players")
+        elif self._game_status == AGHUDConstants.GAME_RUNNING_SINGLE_PLAYER:
+            print("Game Running in Single Player mode")
+        elif self._game_status == AGHUDConstants.GAME_STOPPED:
+            print("Game Stopped")
+        elif self._game_status == AGHUDConstants.GAME_RESET:
+            print("Game Reset")
+
+    def backup_world(self):
+
+        if Path(f"{self._minecraftdir}/saves").is_dir():
+            currentdir = getcwd()
+            expanded_minecraftdir=self._minecraftdir.replace(' ','\ ')
+            expanded_worldname=self._worldname.replace(' ','\ ')
+            command_line = ["bash",f"{currentdir}/ag/scripts/backup-world.bash",f"\"{expanded_minecraftdir}\"",f"\"{expanded_worldname}\""]
+
+            chdir(f"{self._minecraftdir}/saves")
+            fstdout = open("/tmp/AGHUD-BACKUP-WORLD-SCRIPT","w+")
+
+            call(command_line,stdout=fstdout,stderr=subprocess.DEVNULL)
+            chdir(currentdir)
 # ----
 # UNIT TESTING ROUTINES - REMOVE BEFORE DEPLOYING RELEASE
 # ----
@@ -125,13 +169,9 @@ def main(minecraftdir, worldname, singleplayer, autobackup, autobackupdelay):
     print("Game Instance:    Unit Testing")
 
     game = GameInstance(minecraftdir,worldname,singleplayer,autobackup,autobackupdelay)
-    game.set_autoupdate(True)
     game.set_autoupdatedelay(2.0)
-    game.set_autobackup(True)
-    game.set_autobackupdelay(5.0)
 
     while(True):
-        print("loop")
         if game.update_ready():
             print("Update")
             game.update()
