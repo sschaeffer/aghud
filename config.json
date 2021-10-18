@@ -1,7 +1,7 @@
 {
-    "minecraftdir": "/home/integ/.minecraft",
-    "worldname": "New World",
-    "singleplayer": true,
+    "minecraftdir": "/media/local/Minecraft",
+    "worldname": "uhc",
+    "singleplayer": false,
     "autobackup": true,
     "autobackupdelay": 300.0
 }
