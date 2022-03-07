@@ -1,0 +1,35 @@
+{
+  "parent": "skyblock:nether/distract_piglin",
+  "display": {
+    "icon": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "title": {
+      "translate": "Obtain Crying Obsidian"
+    },
+    "description": {
+      "translate": "Why is it so sad?"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "crying_obsidian": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:crying_obsidian"]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "crying_obsidian"
+    ]
+  ]
+}

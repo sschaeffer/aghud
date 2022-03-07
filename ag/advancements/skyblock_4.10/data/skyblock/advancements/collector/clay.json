@@ -1,0 +1,17 @@
+{
+    "display":
+    {
+        "icon": {"item": "minecraft:clay"},
+        "title": {"translate": "Clay Collector"},
+        "description": {"translate": "Drowneds drop clay balls. Farm them and get a stack of Clay Blocks."}
+    },
+    "parent": "skyblock:collector/03cobblestone",
+    "criteria":
+    {
+        "gravel":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:clay"],"count": 64}]}
+        }
+    }
+}

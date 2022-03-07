@@ -1,0 +1,22 @@
+{
+    "type": "crafting_shapeless",
+    "ingredients":
+    [
+	{
+	    "item": "minecraft:cobbled_deepslate"
+	},
+	{
+	    "item": "minecraft:cobbled_deepslate"
+	},
+	{
+	    "item": "minecraft:basalt"
+	},
+	{
+	    "item": "minecraft:basalt"
+	}
+    ],
+    "result":
+    {
+    "item": "minecraft:blackstone"
+    }
+}

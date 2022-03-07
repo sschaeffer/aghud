@@ -1,0 +1,22 @@
+{
+    "display":
+    {
+        "icon": {"item": "minecraft:small_dripleaf"},
+        "title": {"translate":"Mainlander"},
+        "description": {"translate":"Get Moss and Small Dripleaf from the wandedring trader."}
+    },
+    "parent": "skyblock:skyblock/pointed_dripstone",
+    "criteria":
+    {
+	"moss_block":
+        {
+            "trigger": "minecraft:villager_trade",
+	        "conditions": {"item": {"items": ["minecraft:moss_block"]}}
+	},
+	"pointed_dripstone":
+        {
+            "trigger": "minecraft:villager_trade",
+	        "conditions": {"item": {"items": ["minecraft:small_dripleaf"]}}
+	}
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "display":
+    {
+        "icon": {"item": "minecraft:amethyst_block"},
+        "title": {"translate": "Amethyst Collector"},
+        "description": {"translate": "Get a stack of amethyst blocks."}
+    },
+    "parent": "skyblock:collector/root",
+    "criteria":
+    {
+        "amethyst_block":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:amethyst_block"],"count": 64}]}
+        }
+    }
+}

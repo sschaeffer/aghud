@@ -1,0 +1,17 @@
+{
+    "display":
+    {
+        "icon": {"item": "minecraft:dirt"},
+        "title": {"translate": "Dirt Collector"},
+        "description": {"translate": "Craft and hoe coarse dirt to obtain a stack of dirt."}
+    },
+    "parent": "skyblock:collector/01gravel",
+    "criteria":
+    {
+        "dirt":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:dirt"],"count": 64}]}
+        }
+    }
+}

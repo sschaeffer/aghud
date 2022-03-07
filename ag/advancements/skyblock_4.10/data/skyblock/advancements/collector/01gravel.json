@@ -1,0 +1,17 @@
+{
+    "display":
+    {
+        "icon": {"item": "minecraft:gravel"},
+        "title": {"translate": "Gravel Collector"},
+        "description": {"translate": "Get a stack of gravel from piglin bartering."}
+    },
+    "parent": "skyblock:collector/03cobblestone",
+    "criteria":
+    {
+        "gravel":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:gravel"],"count": 64}]}
+        }
+    }
+}

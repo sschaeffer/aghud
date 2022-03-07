@@ -1,0 +1,1 @@
+setblock -81 7 278 minecraft:structure_block{posX: 0, mode: "LOAD", posY: 1, sizeX: 11, posZ: 0, x: -23, name: "minecraft:geode", y: 7, z: -23, sizeY: 12, sizeZ: 11}

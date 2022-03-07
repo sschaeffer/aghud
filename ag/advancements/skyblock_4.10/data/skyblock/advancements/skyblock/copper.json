@@ -1,0 +1,17 @@
+{
+    "display":
+    {
+        "icon": {"item": "minecraft:copper_ingot"},
+        "title": {"translate": "You'll never catch me copper!"},
+        "description": {"translate": "Collect copper from a drowned."}
+    },
+    "parent": "skyblock:skyblock/clay_balls",
+    "criteria":
+    {
+        "copper_ingot":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:copper_ingot"]}]}
+        }
+    }
+}

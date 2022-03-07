@@ -1,0 +1,53 @@
+{
+    "display":
+    {
+        "icon": {"item": "minecraft:oak_sapling"},
+        "title": {"translate": "All Trees"},
+        "description": {"translate": "Collect every sapling and fungus."},
+        "frame": "goal"
+    },
+    "parent": "skyblock:farmer/root",
+    "criteria":
+    {
+        "oak":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:oak_sapling"]}]}
+        },
+        "acacia":
+	{
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:acacia_sapling"]}]}
+        },
+        "spruce":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:spruce_sapling"]}]}
+        },
+	"birch":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:birch_sapling"]}]}
+        },
+        "jungle":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:jungle_sapling"]}]}
+        },
+	"darkOak":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:dark_oak_sapling"]}]}
+	},
+	"crimson":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:crimson_fungus"]}]}
+        },
+	"warped":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:warped_fungus"]}]}
+        }
+    }
+}

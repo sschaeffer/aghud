@@ -1,0 +1,17 @@
+{
+    "display":
+    {
+        "icon": {"item": "minecraft:dripstone_block"},
+        "title": {"translate": "Dripstone Collector"},
+        "description": {"translate": "Get a stack of dripstone blocks."}
+    },
+    "parent": "skyblock:collector/root",
+    "criteria":
+    {
+        "ender_pearl":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:dripstone_block"],"count": 64}]}
+        }
+    }
+}

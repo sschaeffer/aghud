@@ -1,0 +1,17 @@
+{
+    "display":
+    {
+        "icon": {"item": "minecraft:clay_ball"},
+        "title": {"translate": "Drowned"},
+        "description": {"translate": "Collect a clay ball from a drowned."}
+    },
+    "parent": "skyblock:skyblock/fake_cave",
+    "criteria":
+    {
+        "slime_ball":
+        {
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:clay_ball"]}]}
+        }
+    }
+}
