@@ -18,6 +18,7 @@ class AGHUDConfig():
     __minecraftdir = ""
     __worldname = ""
     __servername = ""
+    __advancementversion = "vanilla_1.8.2"
     __autobackup = AGHUDConstants.AUTO_BACKUP_DEFAULT
     __autobackupdelay = AGHUDConstants.AUTO_BACKUP_DELAY_DEFAULT
     __autoupdate = AGHUDConstants.AUTO_UPDATE_DEFAULT
@@ -40,6 +41,7 @@ class AGHUDConfig():
             if "minecraftdir" in config_data: self.__minecraftdir = config_data["minecraftdir"]
             if "worldname" in config_data: self.__worldname = config_data["worldname"]
             if "servername" in config_data: self.__servername = config_data["servername"]
+            if "advancementversion" in config_data: self.__advancementversion = config_data["advancementversion"]
             if "autobackup" in config_data: self.__autobackup = config_data["autobackup"]
             if "autobackupdelay" in config_data: self.__autobackupdelay = config_data["autobackupdelay"]
             if "autoupdate" in config_data: self.__autoupdate = config_data["autoupdate"]
@@ -51,6 +53,7 @@ class AGHUDConfig():
         parser.add_argument('--minecraftdir', help="minecraft server directory")
         parser.add_argument('--worldname', help="minecraft world name")
         parser.add_argument('--servername', help="minecraft server name")
+        parser.add_argument('--advancementversion', help="minecraft advancement version")
         parser.add_argument('--autobackup', help="do you want to auto backup the world", action="store_true")
         parser.add_argument('--autobackupdelay', help="the amount of time between each auto backup")
         parser.add_argument('--noautoupdate', help="do you want to auto update aghud ", action="store_true")
@@ -66,6 +69,8 @@ class AGHUDConfig():
             self.__worldname = args.worldname
         if(args.servername != None):
             self.__servername = args.servername
+        if(args.advancementversion != None):
+            self.__advancementversion = args.advancementversion
         if(args.autobackup):
             self.__autobackup = True
         if(args.autobackupdelay):
@@ -87,6 +92,7 @@ class AGHUDConfig():
                     "minecraftdir": self.__minecraftdir,
                     "worldname": self.__worldname,
                     "servername": self.__servername,
+                    "advancementversion": self.__advancementversion,
                     "autobackup": self.__autobackup,
                     "autobackupdelay": self.__autobackupdelay,
                     "autoupdate": self.__autoupdate,
@@ -107,6 +113,9 @@ class AGHUDConfig():
     def servername(self):
         return self.__servername
 
+    def advancementversion(self):
+        return self.__advancementversion
+
     def autobackup(self):
         return self.__autobackup
 
@@ -125,14 +134,15 @@ class AGHUDConfig():
 def main(aghudconfig):
     print()
     print("AGHUD Config:     Unit Testing")
-    print(f"minecraftdir:    {aghudconfig.minecraftdir()}")
-    print(f"worldname:       {aghudconfig.worldname()}")
-    print(f"servername:      {aghudconfig.servername()}")
-    print(f"singleplayer:    {aghudconfig.singleplayer()}")
-    print(f"autobackup:      {aghudconfig.autobackup()}")
-    print(f"autobackupdelay: {aghudconfig.autobackupdelay()}")
-    print(f"autoupdate:      {aghudconfig.autoupdate()}")
-    print(f"autoupdatedelay: {aghudconfig.autoupdatedelay()}")
+    print(f"minecraftdir:       {aghudconfig.minecraftdir()}")
+    print(f"worldname:          {aghudconfig.worldname()}")
+    print(f"servername:         {aghudconfig.servername()}")
+    print(f"singleplayer:       {aghudconfig.singleplayer()}")
+    print(f"advancementversion: {aghudconfig.advancementversion()}")
+    print(f"autobackup:         {aghudconfig.autobackup()}")
+    print(f"autobackupdelay:    {aghudconfig.autobackupdelay()}")
+    print(f"autoupdate:         {aghudconfig.autoupdate()}")
+    print(f"autoupdatedelay:    {aghudconfig.autoupdatedelay()}")
 
     # Write config.json test
     print("Writing config.json")

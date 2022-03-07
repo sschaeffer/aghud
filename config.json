@@ -1,9 +1,9 @@
 {
     "singleplayer": true,
     "minecraftdir": "/home/integ/.minecraft",
-    "_worldname": "Skyblock 4.09.1",
     "worldname": "Battlefield Fury",
     "servername": "",
+    "advancementversion": "vanilla_1.8.2",
     "autobackup": false,
     "autobackupdelay": 300.0,
     "autoupdate": true,
