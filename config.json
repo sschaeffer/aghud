@@ -1,7 +1,11 @@
 {
-    "minecraftdir": "/media/local/Minecraft",
-    "worldname": "uhc",
-    "singleplayer": false,
-    "autobackup": true,
-    "autobackupdelay": 300.0
+    "singleplayer": true,
+    "minecraftdir": "/home/integ/.minecraft",
+    "_worldname": "Skyblock 4.09.1",
+    "worldname": "Battlefield Fury",
+    "servername": "",
+    "autobackup": false,
+    "autobackupdelay": 300.0,
+    "autoupdate": true,
+    "autoupdatedelay": 2.0
 }

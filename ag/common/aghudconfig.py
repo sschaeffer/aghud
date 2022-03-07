@@ -4,6 +4,7 @@ path.append("/home/integ/Code/aghud")
 
 # Python wide imports
 import os
+import logging
 from argparse import ArgumentParser
 from pathlib import Path
 from json import load, dump
@@ -13,20 +14,21 @@ from ag.common.aghudconstants import AGHUDConstants
 
 class AGHUDConfig():
 
-    _singleplayer = True
-    _minecraftdir = ""
-    _worldname = ""
-    _servername = ""
-    _autobackup = AGHUDConstants.AUTO_BACKUP_DEFAULT
-    _autobackupdelay = AGHUDConstants.AUTO_BACKUP_DELAY_DEFAULT
-    _autoupdate = AGHUDConstants.AUTO_UPDATE_DEFAULT
-    _autoupdatedelay = AGHUDConstants.AUTO_UPDATE_DELAY_DEFAULT
+    __singleplayer = True
+    __minecraftdir = ""
+    __worldname = ""
+    __servername = ""
+    __autobackup = AGHUDConstants.AUTO_BACKUP_DEFAULT
+    __autobackupdelay = AGHUDConstants.AUTO_BACKUP_DELAY_DEFAULT
+    __autoupdate = AGHUDConstants.AUTO_UPDATE_DEFAULT
+    __autoupdatedelay = AGHUDConstants.AUTO_UPDATE_DELAY_DEFAULT
 
 
     def __init__(self, config_file, argv=None):
 
         config_data = None
-
+        
+        logging.debug(f"The config file is {config_file}")
         # Check the config file config.json
         if os.path.isfile(config_file) and os.access(config_file, os.R_OK):
             with open(config_file, "r") as jsonfile:
@@ -34,14 +36,14 @@ class AGHUDConfig():
                 jsonfile.close()
 
         if (config_data):
-            if "singleplayer" in config_data: self._singleplayer = config_data["singleplayer"]
-            if "minecraftdir" in config_data: self._minecraftdir = config_data["minecraftdir"]
-            if "worldname" in config_data: self._worldname = config_data["worldname"]
-            if "servername" in config_data: self._servername = config_data["servername"]
-            if "autobackup" in config_data: self._autobackup = config_data["autobackup"]
-            if "autobackupdelay" in config_data: self._autobackupdelay = config_data["autobackupdelay"]
-            if "autoupdate" in config_data: self._autoupdate = config_data["autoupdate"]
-            if "autoupdatedelay" in config_data: self._autoupdatepdelay = config_data["autoupdatedelay"]
+            if "singleplayer" in config_data: self.__singleplayer = config_data["singleplayer"]
+            if "minecraftdir" in config_data: self.__minecraftdir = config_data["minecraftdir"]
+            if "worldname" in config_data: self.__worldname = config_data["worldname"]
+            if "servername" in config_data: self.__servername = config_data["servername"]
+            if "autobackup" in config_data: self.__autobackup = config_data["autobackup"]
+            if "autobackupdelay" in config_data: self.__autobackupdelay = config_data["autobackupdelay"]
+            if "autoupdate" in config_data: self.__autoupdate = config_data["autoupdate"]
+            if "autoupdatedelay" in config_data: self.__autoupdatedelay = config_data["autoupdatedelay"]
 
         # Check the application arguments (they will override the config.json)
         parser = ArgumentParser(prog="aghud")
@@ -51,27 +53,27 @@ class AGHUDConfig():
         parser.add_argument('--servername', help="minecraft server name")
         parser.add_argument('--autobackup', help="do you want to auto backup the world", action="store_true")
         parser.add_argument('--autobackupdelay', help="the amount of time between each auto backup")
-        parser.add_argument('--noautoupdate', help="do you want to auto update aghud ", action="store_false")
+        parser.add_argument('--noautoupdate', help="do you want to auto update aghud ", action="store_true")
         parser.add_argument('--autoupdatedelay', help="the amount of time between each auto update")
         args = parser.parse_args(argv)
 
         if(args.singleplayer):
-            self._singleplayer = True
-            self._minecraftdir = f"{Path.home()}/.minecraft"
+            self.__singleplayer = True
+            self.__minecraftdir = f"{Path.home()}/.minecraft"
         if(args.minecraftdir != None):
-            self._minecraftdir = args.minecraftdir
+            self.__minecraftdir = args.minecraftdir
         if(args.worldname != None):
-            self._worldname = args.worldname
+            self.__worldname = args.worldname
         if(args.servername != None):
-            self._servername = args.servername
+            self.__servername = args.servername
         if(args.autobackup):
-            self._autobackup = True
+            self.__autobackup = True
         if(args.autobackupdelay):
-            self._autobackupdelay = args.autobackupdelay
+            self.__autobackupdelay = args.autobackupdelay
         if(args.noautoupdate):
-            self._autoupdate = False
+            self.__autoupdate = False
         if(args.autoupdatedelay):
-            self._autoupdatedelay = args.autoupdatedelay
+            self.__autoupdatedelay = args.autoupdatedelay
 
 
     def write_aghud_config(self,config_file):
@@ -81,19 +83,41 @@ class AGHUDConfig():
         else:
             with open(config_file,"w+") as jsonfile:
                 output ={
-                    "singleplayer": self._singleplayer,
-                    "minecraftdir": self._minecraftdir,
-                    "worldname": self._worldname,
-                    "servername": self._servername,
-                    "autobackup": self._autobackup,
-                    "autobackupdelay": self._autobackupdelay,
-                    "autoupdate": self._autoupdate,
-                    "autoupdatedelay": self._autoupdatedelay
+                    "singleplayer": self.__singleplayer,
+                    "minecraftdir": self.__minecraftdir,
+                    "worldname": self.__worldname,
+                    "servername": self.__servername,
+                    "autobackup": self.__autobackup,
+                    "autobackupdelay": self.__autobackupdelay,
+                    "autoupdate": self.__autoupdate,
+                    "autoupdatedelay": self.__autoupdatedelay
                 }
                 dump(output,jsonfile,indent=4)
                 jsonfile.close()
 
+    def singleplayer(self):
+        return self.__singleplayer
 
+    def minecraftdir(self):
+        return self.__minecraftdir
+
+    def worldname(self):
+        return self.__worldname
+
+    def servername(self):
+        return self.__servername
+
+    def autobackup(self):
+        return self.__autobackup
+
+    def autobackupdelay(self):
+        return self.__autobackupdelay
+
+    def autoupdate(self):
+        return self.__autoupdate
+
+    def autoupdatedelay(self):
+        return self.__autoupdatedelay
 
 # ----
 # UNIT TESTING ROUTINES - REMOVE BEFORE DEPLOYING RELEASE
@@ -101,19 +125,20 @@ class AGHUDConfig():
 def main(aghudconfig):
     print()
     print("AGHUD Config:     Unit Testing")
-    print(f"minecraftdir:    {aghudconfig.get_minecraftdir()}")
-    print(f"worldname:       {aghudconfig.get_worldname()}")
-    print(f"singleplayer:    {aghudconfig.get_servername()}")
-    print(f"singleplayer:    {aghudconfig.get_singleplayer()}")
-    print(f"autobackup:      {aghudconfig.get_autobackup}")
-    print(f"autobackupdelay: {aghudconfig.get_autobackupdelay}")
-    print(f"autoupdate:      {aghudconfig.get_autoupdate}")
-    print(f"autoupdatedelay: {aghudconfig.get_autoupatedelay}")
+    print(f"minecraftdir:    {aghudconfig.minecraftdir()}")
+    print(f"worldname:       {aghudconfig.worldname()}")
+    print(f"servername:      {aghudconfig.servername()}")
+    print(f"singleplayer:    {aghudconfig.singleplayer()}")
+    print(f"autobackup:      {aghudconfig.autobackup()}")
+    print(f"autobackupdelay: {aghudconfig.autobackupdelay()}")
+    print(f"autoupdate:      {aghudconfig.autoupdate()}")
+    print(f"autoupdatedelay: {aghudconfig.autoupdatedelay()}")
 
     # Write config.json test
-    print("\nWriting config.json")
+    print("Writing config.json")
     aghudconfig.write_aghud_config("/home/integ/Code/aghud/config.json")
 
 if __name__ == "__main__":
+    logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', datefmt='%I:%M:%S%p', level=logging.INFO)
     aghudconfig = AGHUDConfig("/home/integ/Code/aghud/config.json")
     main(aghudconfig)

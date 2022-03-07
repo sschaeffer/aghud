@@ -189,7 +189,7 @@ class ServerQuery:
 # ----
 # UNIT TESTING ROUTINES - REMOVE BEFORE DEPLOYING RELEASE
 # ----
-def main(minecraftdir, worldname, singleplayer, autobackup, autobackupdelay):
+def main(aghudconfig):
 
     print()
     print("Server Query:    Unit Testing")
@@ -197,7 +197,7 @@ def main(minecraftdir, worldname, singleplayer, autobackup, autobackupdelay):
     server_query = ServerQuery()
 
     if not server_query.is_connected():
-        server_query.test_connection(minecraftdir, worldname)
+        server_query.test_connection(aghudconfig.minecraftdir(), aghudconfig.servername())
         print(f"Result: {server_query.is_connected()}")
 
 #    while not server_query.is_connected():
@@ -206,5 +206,5 @@ def main(minecraftdir, worldname, singleplayer, autobackup, autobackupdelay):
 
 
 if __name__ == "__main__":
-    (minecraftdir, worldname, singleplayer, autobackup, autobackupdelay) = AGHUDConfig.init_aghud("/home/integ/Code/aghud/config.json")
-    main(minecraftdir, worldname, singleplayer, autobackup, autobackupdelay)
+    aghudconfig = AGHUDConfig("/home/integ/Code/aghud/config.json")
+    main(aghudconfig)
