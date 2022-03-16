@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from reprlib import recursive_repr
 from sys import path
 
 path.append("/home/integ/Code/aghud")
@@ -10,7 +11,8 @@ from ag.common.aghudconfig import AGHUDConfig
 import logging
 import glob
 import json
-#Test Test
+from pathlib import Path
+
 
 logger = logging.getLogger('alladvancements')
 
@@ -19,11 +21,25 @@ class Advancement():
     def __init__(self, filename):
         self._filename = filename
         self._parent = ""
+        self._title = ""
+        self._name = ""
+        self._section = ""
+        self._isroot = False
+
+    def parse_filename(self, filename):
+        x = filename.split("/")[::-1]
+        y = x.index('advancements')
+        z = x[y-1::-1] 
+        self._name = "/"
+        self._name = self._name.join(z)
+        self._section = x[y+1]
 
     def read_advancement(self):
         advancement_file = open(self._filename,'r')
         advancement_info = json.load(advancement_file)
         advancement_file.close()
+
+        self.parse_filename(self._filename)
 
         if 'display' not in advancement_info:
 #            print ("No Display")
@@ -42,17 +58,31 @@ class Advancement():
             pass
         else:
             self._parent = advancement_info['parent']
-        print(self._parent +":\t\t\t"+self._filename)
 
+        print(self._section+": "+self._name)
+        if self._parent == "":
+            print(self._title+": "+self._filename)
 
 class AllAdvancements():
 
     def __init__(self, aghudconfig):
         logger.debug(aghudconfig.worldname())
-        files = glob.glob("/home/integ/Code/aghud/ag/advancements/vanilla_1.8.2/**/*.json", recursive=True)
-        for file in files:
-            advancement = Advancement(file)
-            advancement.read_advancement()
+
+        # Check the advancement directory
+        if Path(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}").is_dir():
+            if Path(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}/datapacks").is_dir():
+                datapacks = glob.glob(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}/datapacks/*", recursive=True)
+                for datapack in datapacks:
+                    print(datapack)
+            
+
+
+        advancementdirs = glob.glob("./ag/advancements/bacap_1.13.4/**/advancements", recursive=True)
+        for advancementdir in advancementdirs:
+            jsonfiles = glob.glob(f"{advancementdir}/**/*.json", recursive=True)
+            for jsonfile in jsonfiles:
+                advancement = Advancement(jsonfile)
+                advancement.read_advancement()
 
 # ----
 # UNIT TESTING ROUTINES - REMOVE BEFORE DEPLOYING RELEASE
