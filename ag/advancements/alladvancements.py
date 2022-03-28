@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from operator import iadd
 from reprlib import recursive_repr
 from sys import path
 
@@ -20,6 +21,8 @@ class Advancement():
 
     ADVANCEMENT_NOTCOMPLETED=0
     ADVANCEMENT_COMPLETED=1
+    REQUIREMENT_ALL=0
+    REQUIREMENT_ANY=1
 
     def __init__(self, filename):
         self._name = ""
@@ -28,6 +31,9 @@ class Advancement():
         self._parent = ""
         self._section = ""
         self._completed = self.ADVANCEMENT_NOTCOMPLETED
+        self._criteria = []
+        self._finished = []
+        self._requirement = self.REQUIREMENT_ALL
 
     def parse_filename(self, filename):
         x = filename[:-5].rstrip().split("/")[::-1]
@@ -56,12 +62,57 @@ class Advancement():
             pass
         else:
             self._title = advancement_info['display']['title']['translate']
- 
+        if '.title' in self._title:
+            newtitle = self._title.split('.')[-2]
+            if newtitle == 'root':
+                newtitle = self._title.split('.')[-3]
+            self._title = newtitle
+
         if 'parent' not in advancement_info:
 #            print ("No Parent")
             pass
         else:
             self._parent = advancement_info['parent']
+
+        if 'criteria' not in advancement_info:
+            print(f"No criteria for {self._name}")
+            pass
+        else:
+            for criteria in advancement_info['criteria']:
+                if criteria not in self._criteria:
+                    self._criteria.append(criteria)
+
+        if 'requirement' in advancement_info:
+            self._requirement = self.REQUIREMENT_ANY
+
+    def print_advancement(self):
+        print(f"Advancement Name:      {self._name}")
+        print(f"Advancement Filename:  {self._filename}")
+        print(f"Advancement Title:     {self._title}")
+        print(f"Advancement Parent:    {self._parent}")
+
+        if(self._requirement==self.REQUIREMENT_ANY):
+            print(f"Advancement Required:  ANY")
+        else:
+            print(f"Advancement Required:  ALL")
+
+        print(f"Advancement Criteria:  ", end='')
+        print(f"({len(self._criteria)}) ", end='')
+        for criteria in self._criteria:
+            print(f"{criteria} ", end='')
+        print()
+
+        print(f"Advancement Finished:  ", end='')
+        print(f"({len(self._finished)}) ", end='')
+        for criteria in self._finished:
+            print(f"{criteria} ", end='')
+        print()
+
+        if(self._completed==self.ADVANCEMENT_COMPLETED):
+            print(f"Advancement Completed: TRUE")
+        else:
+            print(f"Advancement Completed: FALSE")
+
 
     def index(self):
         return self._index
@@ -77,14 +128,20 @@ class AllAdvancements():
         if Path(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}").is_dir():
             if Path(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}/datapacks").is_dir():
                 datapacks = glob.glob(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}/datapacks/*", recursive=True)
-                for datapack in datapacks:
-                    print(datapack)
+        #        for datapack in datapacks:
+        #            print(datapack)
 
         if Path(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}").is_dir():
             if Path(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}/advancements").is_dir():
                 self._useradvancementsdir = f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}/advancements"
 
-        advancementdirs = glob.glob("./ag/advancements/bacap_1.13.4/**/advancements", recursive=True)
+        if aghudconfig.advancementversion() == "skyblock_4.10":
+            advancementdirs = glob.glob("./ag/advancements/skyblock_4.10/**/advancements", recursive=True)
+        elif aghudconfig.advancementversion() == "bacap_1.13.4":
+            advancementdirs = glob.glob("./ag/advancements/bacap_1.13.4/**/advancements", recursive=True)
+        else:
+            advancementdirs = glob.glob("./ag/advancements/vanilla_1.8.2/**/advancements", recursive=True)
+
         for advancementdir in advancementdirs:
             jsonfiles = glob.glob(f"{advancementdir}/**/*.json", recursive=True)
             for jsonfile in jsonfiles:
@@ -105,10 +162,37 @@ class AllAdvancements():
                     if i in self._advancements:
                         if 'done' in useradvancements[i] and useradvancements[i]['done'] == True:
                             self._advancements[i]._completed = Advancement.ADVANCEMENT_COMPLETED
+                        if 'criteria' in useradvancements[i]:
+                            for criteria in useradvancements[i]['criteria']:
+                                if criteria not in self._advancements[i]._finished:
+                                    self._advancements[i]._finished.append(criteria)
+
+
+    def advancement_list(self, parent):
+        returnlist=[]
+        if parent == "":
+            for i in self._advancements:
+                if '/root' in i:
+                    returnlist.append(i)
+        else:
+            for i in self._advancements:
+                if self._advancements[i]._parent == parent:
+                    if ':technical/' not in i:
+                        returnlist.append(i)
+                        returnlist.extend(self.advancement_list(i))
+        return returnlist
+
+    def advancement_title(self,advancement):
+        return(self._advancements[advancement]._title)
+
+    def advancement_complete(self,advancement):
+        return(self._advancements[advancement]._completed)
 
     def print_advancements(self):
-        for i in self._advancements:
-            print(f"{self._advancements[i]._completed} @@@ {self._advancements[i]._title} @@@ {i}")
+        pass
+    #    for i in self._advancements:
+    #        print(f"{self._advancements[i]._completed} @@@ {self._advancements[i]._title} @@@ {i}")
+    #    self._advancements['minecraft:end/levitate'].print_advancement()
 
 
 # ----
@@ -120,8 +204,17 @@ def main(aghudconfig):
  # ---   logging.getLogger("alladvancements").setLevel(logging.INFO)
     logger.debug("All Advancements:    Unit Testing")
     aa = AllAdvancements(aghudconfig)
-    aa.update_advancements('de3bf147-8c46-4698-81e1-ca2ef0a3e02d.json')
-    aa.print_advancements()
+#    aa.update_advancements('de3bf147-8c46-4698-81e1-ca2ef0a3e02d.json')
+
+    newlist=[]
+    newlist = aa.advancement_list('')
+    print(len(newlist))
+    for i in newlist:
+        print(f':{i}-{aa.advancement_title(i)}')
+
+##    aa.show_root_categories()
+##    aa.print_advancement_tree('blazeandcave:challenges/root')
+##    aa._advancements['blazeandcave:challenges/i_am_loot'].print_advancement()
 
 if __name__ == "__main__":
     aghudconfig = AGHUDConfig("/home/integ/Code/aghud/config.json")

@@ -8,6 +8,7 @@ import logging
 from argparse import ArgumentParser
 from pathlib import Path
 from json import load, dump
+import curses
 
 # Package imports
 from ag.common.aghudconstants import AGHUDConstants
@@ -127,6 +128,46 @@ class AGHUDConfig():
 
     def autoupdatedelay(self):
         return self.__autoupdatedelay
+
+    def curses_setup(self, stdscr):
+
+        curses.noecho()
+        curses.cbreak()
+        curses.curs_set(0)
+        curses.halfdelay(10)
+
+        # Start colors in curses
+        if curses.has_colors():
+            curses.start_color()
+
+        curses.init_pair(AGHUDConstants.COLOR_BCMENU_MENU, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        curses.init_pair(AGHUDConstants.COLOR_BCMENU_SELECTED_MENU, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        curses.init_pair(AGHUDConstants.COLOR_ADVANCEMENT_COMPLETE, 46, 0) #GREEN text and default bkgd
+        curses.init_pair(AGHUDConstants.COLOR_STATUS_BAR, curses.COLOR_WHITE, 240) #BLACK text and GREY bkgd 
+        curses.init_pair(AGHUDConstants.COLOR_STATUS_BAR_GAME_TIME, curses.COLOR_BLACK, 34) #BLACK text and BRIGHT GREEN bkgd 
+        curses.init_pair(AGHUDConstants.COLOR_STATUS_BAR_UNTIL_RAIN, curses.COLOR_BLACK, 26) #BLACK text and  
+        curses.init_pair(AGHUDConstants.COLOR_STATUS_BAR_UNTIL_THUNDER, curses.COLOR_CYAN, 237) #BLACK text and  
+
+        curses.init_pair(AGHUDConstants.COLOR_DAWN, curses.COLOR_BLACK, 216)         # BLACK text and BRIGHT YELLOW bkgd (1min 40secs)
+        curses.init_pair(AGHUDConstants.COLOR_WORKDAY, curses.COLOR_BLACK, 192)      # BLACK text and YELLOW bkgd (5mins 50secs)
+        curses.init_pair(AGHUDConstants.COLOR_HAPPYHOUR, curses.COLOR_BLACK, 181)    # BLACK text and LIGHT BLUE/PURPLE bkgd (2mins 30secs)
+        curses.init_pair(AGHUDConstants.COLOR_TWILIGHT, curses.COLOR_BLACK, 147)     # BLACK text and PURPLE bkgd (27secs)
+        curses.init_pair(AGHUDConstants.COLOR_SLEEP, curses.COLOR_WHITE, 63)         # WHITE text and DARK BLUE PURPLE bkgd (21secs)
+        curses.init_pair(AGHUDConstants.COLOR_MONSTERS, curses.COLOR_WHITE, 17)      # WHITE text and DARKEST BLUE/BLACK bkgd (8mins 1secs)
+        curses.init_pair(AGHUDConstants.COLOR_NO_MONSTERS, curses.COLOR_WHITE, 20)   # WHITE text and LIGHT BLUE bkgd (11 secs)
+        curses.init_pair(AGHUDConstants.COLOR_NO_SLEEP, curses.COLOR_WHITE, 96)      # WHITE text and PINK bkgd (27secs)
+
+    def check_minimum_size(self,stdscr:curses.window):
+        (height,width) = stdscr.getmaxyx()
+        if(height<AGHUDConstants.MINIMUM_HEIGHT or width<AGHUDConstants.MINIMUM_WIDTH):
+            stdscr.clear()
+            stdscr.addstr(int(height/2),int((width/2)-5),
+                          f"Resize{AGHUDConstants.MINIMUM_HEIGHT}x{AGHUDConstants.MINIMUM_WIDTH}")
+            stdscr.noutrefresh()
+        return(height,width)
+
+
+
 
 # ----
 # UNIT TESTING ROUTINES - REMOVE BEFORE DEPLOYING RELEASE

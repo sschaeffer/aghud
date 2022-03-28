@@ -3,15 +3,15 @@
     {
         "icon": {"item": "minecraft:cobblestone"},
         "title": {"translate": "Cobblestone Generator"},
-        "description": {"translate": "Make a cobblestone generator with water and lava."}},
-        "parent": "skyblock:skyblock/root",
-        "criteria":
+        "description": {"translate": "Make a cobblestone generator with water and lava."}
+    },
+    "parent": "skyblock:skyblock/root",
+    "criteria":
+    {
+        "cobblestone":
         {
-            "cobblestone":
-            {
-                "trigger": "minecraft:inventory_changed",
-                "conditions" : {"items": [{"items": ["minecraft:cobblestone"]}]}
-            }
+            "trigger": "minecraft:inventory_changed",
+            "conditions" : {"items": [{"items": ["minecraft:cobblestone"]}]}
         }
     }
 }

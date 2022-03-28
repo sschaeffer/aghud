@@ -49,6 +49,22 @@ class AGHUDConstants():
     RAIN_NOSLEEP=23992       # 23992 No sleeping rainy days (19:59/9:33)
     DAY_FULLDAY=24000        # 24000 Full-day 
 
+    COLOR_BCMENU_MENU=1
+    COLOR_BCMENU_SELECTED_MENU=2
+    COLOR_ADVANCEMENT_COMPLETE=3
+    COLOR_STATUS_BAR=4
+    COLOR_STATUS_BAR_GAME_TIME=5
+    COLOR_STATUS_BAR_UNTIL_RAIN=6
+    COLOR_STATUS_BAR_UNTIL_THUNDER=7
+
+    COLOR_DAWN=101           # 1min 40secs
+    COLOR_WORKDAY=102        # 5mins 50secs
+    COLOR_HAPPYHOUR=103      # 2mins 30secs
+    COLOR_TWILIGHT=104       # 27secs
+    COLOR_SLEEP=105          # 21secs
+    COLOR_MONSTERS=106       # 8mins 1secs
+    COLOR_NO_MONSTERS=107    # 11 secs
+    COLOR_NO_SLEEP=108       # 27secs
 
 
 

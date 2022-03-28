@@ -3,7 +3,7 @@
     "minecraftdir": "/home/integ/.minecraft",
     "worldname": "Battlefield Fury",
     "servername": "",
-    "advancementversion": "vanilla_1.8.2",
+    "advancementversion": "bacap_1.13.4",
     "autobackup": false,
     "autobackupdelay": 300.0,
     "autoupdate": true,
