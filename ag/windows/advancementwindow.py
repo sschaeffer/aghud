@@ -170,6 +170,7 @@ class AdvancementWindow():
                     self._advancementwindow.addstr(j,0,advancementtitle)
 
         advancement:Advancement = self._alladvancements._advancements[self._currentadvancementslist[self._topadvancement+self._currentadvancement]]
+        self._advancementwindow.addstr(0,60,f"{len(advancement._finished)}/{len(advancement._criteria)}", curses.A_REVERSE)
         self._bottomcriteria = len(advancement._criteria) 
         for i in range(self._bottomcriteria)[self._topcriteria:self._topcriteria+self._maxlines]:
             j=i-self._topcriteria
