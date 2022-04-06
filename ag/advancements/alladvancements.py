@@ -189,10 +189,9 @@ class AllAdvancements():
         return(self._advancements[advancement]._completed)
 
     def print_advancements(self):
-        pass
-    #    for i in self._advancements:
-    #        print(f"{self._advancements[i]._completed} @@@ {self._advancements[i]._title} @@@ {i}")
-    #    self._advancements['minecraft:end/levitate'].print_advancement()
+        for i in self._advancements:
+            print(f"{self._advancements[i]._completed} @@@ {self._advancements[i]._title} @@@ {i}")
+#        self._advancements['minecraft:end/levitate'].print_advancement()
 
 
 # ----
@@ -204,13 +203,14 @@ def main(aghudconfig):
  # ---   logging.getLogger("alladvancements").setLevel(logging.INFO)
     logger.debug("All Advancements:    Unit Testing")
     aa = AllAdvancements(aghudconfig)
-#    aa.update_advancements('de3bf147-8c46-4698-81e1-ca2ef0a3e02d.json')
+    aa.update_advancements('de3bf147-8c46-4698-81e1-ca2ef0a3e02d.json')
 
     newlist=[]
     newlist = aa.advancement_list('')
     print(len(newlist))
     for i in newlist:
         print(f':{i}-{aa.advancement_title(i)}')
+    aa.print_advancements()
 
 ##    aa.show_root_categories()
 ##    aa.print_advancement_tree('blazeandcave:challenges/root')
