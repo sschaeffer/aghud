@@ -138,7 +138,7 @@ class AllAdvancements():
         if aghudconfig.advancementversion() == "skyblock_4.10":
             advancementdirs = glob.glob("./ag/advancements/skyblock_4.10/**/advancements", recursive=True)
         elif aghudconfig.advancementversion() == "bacap_1.13.4":
-            advancementdirs = glob.glob("./ag/advancements/bacap_1.13.4/**/advancements", recursive=True)
+            advancementdirs = glob.glob("./ag/advancements/bacap_1.13.7/**/advancements", recursive=True)
         else:
             advancementdirs = glob.glob("./ag/advancements/vanilla_1.8.2/**/advancements", recursive=True)
 
