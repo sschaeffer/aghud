@@ -28,7 +28,8 @@ class AdvancementWindow():
     def __init__(self, stdscr:curses.window, aghudconfig):
         self._stdscr:curses.stdscr = stdscr
         self._alladvancements = AllAdvancements(aghudconfig)
-        self._alladvancements.update_advancements('de3bf147-8c46-4698-81e1-ca2ef0a3e02d.json')
+        #self._alladvancements.update_advancements('de3bf147-8c46-4698-81e1-ca2ef0a3e02d.json')
+        self._alladvancements.update_advancements('0204da8b-0edd-47ad-8890-ac5ee611b575.json')
 
         self._currentadvancementslist=[]
         self._maxlines = 0
