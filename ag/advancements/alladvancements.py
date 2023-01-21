@@ -4,8 +4,8 @@ from operator import iadd
 from reprlib import recursive_repr
 from sys import path
 
-#path.append("/home/integ/Code/aghud")
-path.append("C:/users/sscha/Code/aghud")
+path.append("/home/integ/Code/aghud")
+#path.append("C:/users/sscha/Code/aghud")
 
 from ag.common.aghudconstants import AGHUDConstants
 from ag.common.aghudconfig import AGHUDConfig
