@@ -127,14 +127,14 @@ class GameInstance():
                 else:
                     self.__game_status = AGHUDConstants.GAME_PAUSED
             else:
-                self.__server_query.test_connection(self.__minecraftdir, self.__servername)
-                if self.__server_query.is_connected():
-                    if self.__server_query.number_players() > 0:
+                #self.__server_query.test_connection(self.__minecraftdir, self.__servername)
+                #if self.__server_query.is_connected():
+                #    if self.__server_query.number_players() > 0:
                         self.__game_status = AGHUDConstants.GAME_RUNNING
-                    else:
-                        self.__game_status = AGHUDConstants.GAME_RUNNING_NO_PLAYERS
-                else:
-                    self.__game_status = AGHUDConstants.GAME_STOPPED
+                #    else:
+                #        self.__game_status = AGHUDConstants.GAME_RUNNING_NO_PLAYERS
+                #else:
+                #    self.__game_status = AGHUDConstants.GAME_STOPPED
         else:
             if self.__game_status !=  AGHUDConstants.GAME_STARTING: self.__game_status = AGHUDConstants.GAME_RESET
 

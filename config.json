@@ -1,9 +1,9 @@
 {
-    "singleplayer": true,
+    "singleplayer": false,
     "minecraftdir": "/media/local/Minecraft",
-    "worldname": "love.57707",
-    "servername": "love",
-    "advancementversion": "bacap_1.15.2",
+    "worldname": "fury.57777",
+    "servername": "fury",
+    "advancementversion": "bacap_1.16.1",
     "autobackup": false,
     "autobackupdelay": 300.0,
     "autoupdate": true,
