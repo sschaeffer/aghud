@@ -5,6 +5,7 @@ from reprlib import recursive_repr
 from sys import path
 
 path.append("/home/integ/Code/aghud")
+#path.append("C:/users/sscha/Code/aghud")
 
 from ag.common.aghudconstants import AGHUDConstants
 from ag.common.aghudconfig import AGHUDConfig
@@ -137,8 +138,10 @@ class AllAdvancements():
 
         if aghudconfig.advancementversion() == "skyblock_4.10":
             advancementdirs = glob.glob("./ag/advancements/skyblock_4.10/**/advancements", recursive=True)
-        elif aghudconfig.advancementversion() == "bacap_1.13.4":
+        elif aghudconfig.advancementversion() == "bacap_1.13.7":
             advancementdirs = glob.glob("./ag/advancements/bacap_1.13.7/**/advancements", recursive=True)
+        elif aghudconfig.advancementversion() == "bacap_1.15.2":
+            advancementdirs = glob.glob("./ag/advancements/bacap_1.15.2/**/advancements", recursive=True)
         else:
             advancementdirs = glob.glob("./ag/advancements/vanilla_1.8.2/**/advancements", recursive=True)
 
@@ -203,7 +206,8 @@ def main(aghudconfig):
  # ---   logging.getLogger("alladvancements").setLevel(logging.INFO)
     logger.debug("All Advancements:    Unit Testing")
     aa = AllAdvancements(aghudconfig)
-    aa.update_advancements('de3bf147-8c46-4698-81e1-ca2ef0a3e02d.json')
+#    aa.update_advancements('de3bf147-8c46-4698-81e1-ca2ef0a3e02d.json')
+    aa.update_advancements('0204da8b-0edd-47ad-8890-ac5ee611b575.json')
 
     newlist=[]
     newlist = aa.advancement_list('')

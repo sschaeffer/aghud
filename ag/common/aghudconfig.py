@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from sys import path
-path.append("/home/integ/Code/aghud")
+#path.append("/home/integ/Code/aghud")
+path.append("C:/users/sscha/Code/aghud")
 
 # Python wide imports
 import os

@@ -1,9 +1,9 @@
 {
     "singleplayer": true,
-    "minecraftdir": "/home/integ/.minecraft",
-    "worldname": "Battlefield Fury",
-    "servername": "",
-    "advancementversion": "bacap_1.13.4",
+    "minecraftdir": "/media/local/Minecraft",
+    "worldname": "love.57707",
+    "servername": "love",
+    "advancementversion": "bacap_1.15.2",
     "autobackup": false,
     "autobackupdelay": 300.0,
     "autoupdate": true,
