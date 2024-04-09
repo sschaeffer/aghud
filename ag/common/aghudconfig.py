@@ -143,8 +143,7 @@ class AGHUDConfig():
 
             curses.init_pair(AGHUDConstants.COLOR_BCMENU_MENU, curses.COLOR_BLACK, curses.COLOR_WHITE)
             curses.init_pair(AGHUDConstants.COLOR_BCMENU_SELECTED_MENU, curses.COLOR_WHITE, curses.COLOR_BLACK)
-            #if curses.can_change_color():
-            if False:
+            if curses.can_change_color():
                 curses.init_pair(AGHUDConstants.COLOR_ADVANCEMENT_COMPLETE, 46, 0) #GREEN text and default bkgd
                 curses.init_pair(AGHUDConstants.COLOR_STATUS_BAR, curses.COLOR_WHITE, 240) #BLACK text and GREY bkgd 
                 curses.init_pair(AGHUDConstants.COLOR_STATUS_BAR_GAME_TIME, curses.COLOR_BLACK, 34) #BLACK text and BRIGHT GREEN bkgd 
