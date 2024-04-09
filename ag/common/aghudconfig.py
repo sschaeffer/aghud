@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from sys import path
+import time
 #path.append("/home/integ/Code/aghud")
 path.append("C:/users/sscha/Code/aghud")
 
@@ -143,6 +144,8 @@ class AGHUDConfig():
 
             curses.init_pair(AGHUDConstants.COLOR_BCMENU_MENU, curses.COLOR_BLACK, curses.COLOR_WHITE)
             curses.init_pair(AGHUDConstants.COLOR_BCMENU_SELECTED_MENU, curses.COLOR_WHITE, curses.COLOR_BLACK)
+            print(curses.COLORS)
+            time.sleep(20) 
             if curses.can_change_color():
                 curses.init_pair(AGHUDConstants.COLOR_ADVANCEMENT_COMPLETE, 46, 0) #GREEN text and default bkgd
                 curses.init_pair(AGHUDConstants.COLOR_STATUS_BAR, curses.COLOR_WHITE, 240) #BLACK text and GREY bkgd 
