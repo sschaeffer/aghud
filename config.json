@@ -1,6 +1,6 @@
 {
     "singleplayer": false,
-    "minecraftdir": "/media/local/Minecraft",
+    "minecraftdir": "/home/integ/.minecraft",
     "worldname": "fury.57777",
     "servername": "fury",
     "advancementversion": "bacap_1.16.1",

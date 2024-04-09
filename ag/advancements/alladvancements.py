@@ -3,6 +3,7 @@
 from operator import iadd
 from reprlib import recursive_repr
 from sys import path
+from datetime import datetime
 
 path.append("/home/integ/Code/aghud")
 #path.append("C:/users/sscha/Code/aghud")
@@ -35,6 +36,7 @@ class Advancement():
         self._criteria = []
         self._finished = []
         self._requirement = self.REQUIREMENT_ALL
+        self._completed_datetime = "2010-01-01 00:00:00 +0900"
 
     def parse_filename(self, filename):
         x = filename[:-5].rstrip().split("/")[::-1]
@@ -114,6 +116,8 @@ class Advancement():
         else:
             print(f"Advancement Completed: FALSE")
 
+        print(f"{self._completed_datatime}")
+
 
     def index(self):
         return self._index
@@ -171,7 +175,10 @@ class AllAdvancements():
                             for criteria in useradvancements[i]['criteria']:
                                 if criteria not in self._advancements[i]._finished:
                                     self._advancements[i]._finished.append(criteria)
-
+                                    t1 = datetime.strptime(useradvancements[i]['criteria'][criteria],"%Y-%m-%d %H:%M:%S %z")
+                                    t2 = datetime.strptime(self._advancements[i]._completed_datetime,"%Y-%m-%d %H:%M:%S %z")
+                                    if(t1>t2):
+                                        self._advancements[i]._completed_datetime = useradvancements[i]['criteria'][criteria]
 
     def advancement_list(self, parent):
         returnlist=[]
@@ -195,7 +202,7 @@ class AllAdvancements():
 
     def print_advancements(self):
         for i in self._advancements:
-            print(f"{self._advancements[i]._completed} @@@ {self._advancements[i]._title} @@@ {i}")
+            print(f"{self._advancements[i]._completed} @@@ {self._advancements[i]._title} @@@ {i} @@@ {self._advancements[i]._completed_datetime[:-5]}")
 #        self._advancements['minecraft:end/levitate'].print_advancement()
 
 
