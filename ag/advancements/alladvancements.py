@@ -128,6 +128,7 @@ class AllAdvancements():
         logger.debug(aghudconfig.worldname())
 
         self._advancements={}
+        self._last_datetime = "2010-01-01 00:00:00 +0900"
 
         # Check the advancement directory
         if Path(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}").is_dir():
@@ -179,8 +180,11 @@ class AllAdvancements():
                                     self._advancements[i]._finished.append(criteria)
                                     t1 = datetime.strptime(useradvancements[i]['criteria'][criteria],"%Y-%m-%d %H:%M:%S %z")
                                     t2 = datetime.strptime(self._advancements[i]._completed_datetime,"%Y-%m-%d %H:%M:%S %z")
+                                    t3 = datetime.strptime(self._last_datetime,"%Y-%m-%d %H:%M:%S %z")
                                     if(t1>t2):
                                         self._advancements[i]._completed_datetime = useradvancements[i]['criteria'][criteria]
+                                    if(t1>t3):
+                                        self._last_datetime = useradvancements[i]['criteria'][criteria]
 
     def advancement_list(self, parent):
         returnlist=[]
@@ -207,6 +211,16 @@ class AllAdvancements():
             print(f"{self._advancements[i]._completed} @@@ {self._advancements[i]._title} @@@ {i} @@@ {self._advancements[i]._completed_datetime[:-5]}")
 #        self._advancements['minecraft:end/levitate'].print_advancement()
 
+    def print_last_datetime(self):
+        print(f"{self._last_datetime}")
+
+    def print_number_of_completed(self):
+        num_completed=0
+        for i in self._advancements:
+            if self._advancements[i]._completed:
+                num_completed = num_completed+1
+        print(f"{num_completed}")
+
 
 # ----
 # UNIT TESTING ROUTINES - REMOVE BEFORE DEPLOYING RELEASE
@@ -217,8 +231,7 @@ def main(aghudconfig):
  # ---   logging.getLogger("alladvancements").setLevel(logging.INFO)
     logger.debug("All Advancements:    Unit Testing")
     aa = AllAdvancements(aghudconfig)
-#    aa.update_advancements('de3bf147-8c46-4698-81e1-ca2ef0a3e02d.json')
-    aa.update_advancements('0204da8b-0edd-47ad-8890-ac5ee611b575.json')
+    aa.update_advancements(aghudconfig.uuidjson())
 
     newlist=[]
     newlist = aa.advancement_list('')
@@ -226,6 +239,8 @@ def main(aghudconfig):
     for i in newlist:
         print(f':{i}-{aa.advancement_title(i)}')
     aa.print_advancements()
+    aa.print_last_datetime()
+    aa.print_number_of_completed()
 
 ##    aa.show_root_categories()
 ##    aa.print_advancement_tree('blazeandcave:challenges/root')

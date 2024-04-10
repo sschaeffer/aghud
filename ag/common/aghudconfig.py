@@ -18,6 +18,7 @@ from ag.common.aghudconstants import AGHUDConstants
 class AGHUDConfig():
 
     __singleplayer = True
+    __uuidjson = "0204da8b-0edd-47ad-8890-ac5ee611b575.json"
     __minecraftdir = ""
     __worldname = ""
     __servername = ""
@@ -41,6 +42,7 @@ class AGHUDConfig():
 
         if (config_data):
             if "singleplayer" in config_data: self.__singleplayer = config_data["singleplayer"]
+            if "uuidjson" in config_data: self.__uuidjson = config_data["uuidjson"]
             if "minecraftdir" in config_data: self.__minecraftdir = config_data["minecraftdir"]
             if "worldname" in config_data: self.__worldname = config_data["worldname"]
             if "servername" in config_data: self.__servername = config_data["servername"]
@@ -53,6 +55,7 @@ class AGHUDConfig():
         # Check the application arguments (they will override the config.json)
         parser = ArgumentParser(prog="aghud")
         parser.add_argument('--singleplayer', help="is this a single player world or server", action="store_true")
+        parser.add_argument('--uuidjson', help="is the json filename for the user")
         parser.add_argument('--minecraftdir', help="minecraft server directory")
         parser.add_argument('--worldname', help="minecraft world name")
         parser.add_argument('--servername', help="minecraft server name")
@@ -66,6 +69,8 @@ class AGHUDConfig():
         if(args.singleplayer):
             self.__singleplayer = True
             self.__minecraftdir = f"{Path.home()}/.minecraft"
+        if(args.uuidjson):
+            self.__uuidjson = "0204da8b-0edd-47ad-8890-ac5ee611b575.json"
         if(args.minecraftdir != None):
             self.__minecraftdir = args.minecraftdir
         if(args.worldname != None):
@@ -92,6 +97,7 @@ class AGHUDConfig():
             with open(config_file,"w+") as jsonfile:
                 output ={
                     "singleplayer": self.__singleplayer,
+                    "uuidjson": self.__uuidjson,
                     "minecraftdir": self.__minecraftdir,
                     "worldname": self.__worldname,
                     "servername": self.__servername,
@@ -106,6 +112,9 @@ class AGHUDConfig():
 
     def singleplayer(self):
         return self.__singleplayer
+
+    def uuidjson(self):
+        return self.__uuidjson
 
     def minecraftdir(self):
         return self.__minecraftdir
@@ -184,6 +193,7 @@ def main(aghudconfig):
     print(f"worldname:          {aghudconfig.worldname()}")
     print(f"servername:         {aghudconfig.servername()}")
     print(f"singleplayer:       {aghudconfig.singleplayer()}")
+    print(f"uuidjson:           {aghudconfig.uuidjson()}")
     print(f"advancementversion: {aghudconfig.advancementversion()}")
     print(f"autobackup:         {aghudconfig.autobackup()}")
     print(f"autobackupdelay:    {aghudconfig.autobackupdelay()}")
