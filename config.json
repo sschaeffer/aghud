@@ -3,7 +3,7 @@
     "minecraftdir": "/media/local/Minecraft",
     "worldname": "fury.57777",
     "servername": "fury",
-    "advancementversion": "bacap_1.16.1",
+    "advancementversion": "bacap_1.16.3",
     "autobackup": false,
     "autobackupdelay": 300.0,
     "autoupdate": true,
