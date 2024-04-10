@@ -1,0 +1,46 @@
+{		
+	"criteria": {
+		"ride": {
+			"trigger": "minecraft:location",
+			"conditions": {
+				"player": [
+					{
+						"condition": "minecraft:entity_properties",
+						"entity": "this",
+						"predicate": {
+							"vehicle": {
+								"type": "#blazeandcave:player_rideables"
+							}
+						}
+					}
+				]
+			}
+		},
+		"enter_water": {
+			"trigger": "minecraft:enter_block",
+			"conditions": {
+				"block": "minecraft:water"
+			}
+		},
+		"enter_lava": {
+			"trigger": "minecraft:enter_block",
+			"conditions": {
+				"block": "minecraft:lava"
+			}
+		},
+		"enter_ladder": {
+			"trigger": "minecraft:enter_block",
+			"conditions": {
+				"tag": "minecraft:climbable"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"ride",
+			"enter_water",
+			"enter_lava",
+			"enter_ladder"
+		]
+	]
+}
