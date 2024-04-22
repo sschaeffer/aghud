@@ -153,6 +153,8 @@ class AllAdvancements():
             advancementdirs = glob.glob("./ag/advancements/bacap_1.16.1/**/advancements", recursive=True)
         elif aghudconfig.advancementversion() == "bacap_1.16.3":
             advancementdirs = glob.glob("./ag/advancements/bacap_1.16.3/**/advancements", recursive=True)
+        elif aghudconfig.advancementversion() == "bacap_1.16.8":
+            advancementdirs = glob.glob("./ag/advancements/bacap_1.16.8/**/advancements", recursive=True)
         else:
             advancementdirs = glob.glob("./ag/advancements/vanilla_1.8.2/**/advancements", recursive=True)
 
