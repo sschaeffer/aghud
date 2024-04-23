@@ -37,6 +37,7 @@ class Advancement():
         self._finished = []
         self._requirement = self.REQUIREMENT_ALL
         self._completed_datetime = "2010-01-01 00:00:00 +0900"
+        self._printed = False
 
     def parse_filename(self, filename):
         x = filename[:-5].rstrip().split("/")[::-1]
@@ -113,14 +114,23 @@ class Advancement():
 
         if(self._completed==self.ADVANCEMENT_COMPLETED):
             print(f"Advancement Completed: TRUE")
+            print(f"Adveancement Completed Datatime: {self._completed_datetime}")
         else:
             print(f"Advancement Completed: FALSE")
 
-        print(f"{self._completed_datatime}")
-
-
     def index(self):
         return self._index
+
+    def printed(self):
+        return self._printed
+
+    def set_printed(self,printed):
+        self._printed = printed
+
+    def print_for_spreadsheet(self):
+        if(not self.printed()):
+            print(f"{self._completed} @@@ {self._title} @@@ {self._index} @@@ {self._completed_datetime[:-5]} @@@ {self._parent}")
+            self.set_printed(True)
 
 class AllAdvancements():
 
@@ -141,22 +151,8 @@ class AllAdvancements():
             if Path(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}/advancements").is_dir():
                 self._useradvancementsdir = f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}/advancements"
 
-        if aghudconfig.advancementversion() == "skyblock_4.10":
-            advancementdirs = glob.glob("./ag/advancements/skyblock_4.10/**/advancements", recursive=True)
-        elif aghudconfig.advancementversion() == "bacap_1.11.1":
-            advancementdirs = glob.glob("./ag/advancements/bacap_1.11.1/**/advancements", recursive=True)
-        elif aghudconfig.advancementversion() == "bacap_1.13.7":
-            advancementdirs = glob.glob("./ag/advancements/bacap_1.13.7/**/advancements", recursive=True)
-        elif aghudconfig.advancementversion() == "bacap_1.15.2":
-            advancementdirs = glob.glob("./ag/advancements/bacap_1.15.2/**/advancements", recursive=True)
-        elif aghudconfig.advancementversion() == "bacap_1.16.1":
-            advancementdirs = glob.glob("./ag/advancements/bacap_1.16.1/**/advancements", recursive=True)
-        elif aghudconfig.advancementversion() == "bacap_1.16.3":
-            advancementdirs = glob.glob("./ag/advancements/bacap_1.16.3/**/advancements", recursive=True)
-        elif aghudconfig.advancementversion() == "bacap_1.16.8":
-            advancementdirs = glob.glob("./ag/advancements/bacap_1.16.8/**/advancements", recursive=True)
-        else:
-            advancementdirs = glob.glob("./ag/advancements/vanilla_1.8.2/**/advancements", recursive=True)
+        if Path(f"./ag/advancements/{aghudconfig.advancementversion()}").is_dir():
+            advancementdirs = glob.glob(f"./ag/advancements/{aghudconfig.advancementversion()}/**/advancements", recursive=True)
 
         for advancementdir in advancementdirs:
             jsonfiles = glob.glob(f"{advancementdir}/**/*.json", recursive=True)
@@ -212,7 +208,175 @@ class AllAdvancements():
 
     def print_advancements(self):
         for i in self._advancements:
-            print(f"{self._advancements[i]._completed} @@@ {self._advancements[i]._title} @@@ {i} @@@ {self._advancements[i]._completed_datetime[:-5]}")
+            self._advancements[i].set_printed(False)
+        self._advancements['blazeandcave:bacap/root'].print_for_spreadsheet()
+        self._advancements['blazeandcave:bacap/getting_wood'].print_for_spreadsheet()
+        self._advancements['minecraft:story/root'].print_for_spreadsheet()
+        self._advancements['blazeandcave:bacap/time_to_mine'].print_for_spreadsheet()
+        self._advancements['blazeandcave:bacap/time_to_strike'].print_for_spreadsheet()
+        self._advancements['blazeandcave:bacap/time_to_chop'].print_for_spreadsheet()
+        self._advancements['blazeandcave:bacap/time_to_dig'].print_for_spreadsheet()
+        self._advancements['blazeandcave:bacap/time_to_farm'].print_for_spreadsheet()
+
+        for i in self._advancements:
+            if ':technical/' in i or '/obtain_netherite_hoe' in i:
+                self._advancements[i].set_printed(True)
+
+        print(f" @@@ @@@ Mining 109 @@@ @@@ ")
+        self._advancements['blazeandcave:mining/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':mining/' in i or ':mining/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+        self._advancements['minecraft:story/form_obsidian'].print_for_spreadsheet()
+        self._advancements['minecraft:story/enter_the_nether'].print_for_spreadsheet()
+        self._advancements['minecraft:story/iron_tools'].print_for_spreadsheet()
+        self._advancements['minecraft:story/obtain_armor'].print_for_spreadsheet()
+        self._advancements['minecraft:story/mine_diamond'].print_for_spreadsheet()
+        self._advancements['minecraft:story/upgrade_tools'].print_for_spreadsheet()
+        self._advancements['minecraft:story/enchant_item'].print_for_spreadsheet()
+        self._advancements['minecraft:adventure/kill_mob_near_sculk_catalyst'].print_for_spreadsheet()
+        self._advancements['minecraft:husbandry/wax_off'].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Building 107 @@@ @@@ ")
+        self._advancements['blazeandcave:building/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':building/' in i or ':building/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Farming 60 @@@ @@@ ")
+        self._advancements['blazeandcave:farming/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':farming/' in i or ':farming/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Animal 131 -133  @@@ @@@ ")
+        self._advancements['minecraft:husbandry/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':animal/' in i or ':animal/' in self._advancements[i]._parent or \
+                ':husbandry/' in i or ':husbandry/' in self._advancements[i]._parent:
+                if '/truffle_worm' not in i and '/complete_catalogue' not in i and \
+                    '/evelyn_evergreen' not in i and '/awards_ceremony' not in i and \
+                    '/repair_wolf_armor' not in i and '/remove_wolf_armor' not in i and \
+                    '/whole_pack' not in i and '/brush_armadillo' not in i and \
+                    '/obtain_sniffer_egg' not in i and '/allay_deliver_item_to_player' not in i and \
+                    '/allay_deliver_cake_to_note_block' not in i and '/plant_any_sniffer_seed' not in i and \
+                    '/feed_snifflet' not in i:
+                    if(not self._advancements[i].printed()):
+                        self._advancements[i].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Monsters 78 -79 @@@ @@@ ")
+        self._advancements['blazeandcave:monsters/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':monsters/' in i or ':monsters/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Weaponry 49 @@@ @@@ ")
+        self._advancements['blazeandcave:weaponry/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':weaponry/' in i or ':weaponry/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+        self._advancements['minecraft:adventure/whos_the_pillager_now'].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Biomes 60 -61 @@@ @@@ ")
+        self._advancements['blazeandcave:biomes/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':biomes/' in i or ':biomes/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Adventure 116 -118  @@@ @@@ ")
+        self._advancements['minecraft:adventure/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':adventure/' in i or ':adventure/' in self._advancements[i]._parent:
+                if '/repair_wolf_armor' not in i and '/remove_wolf_armor' not in i and \
+                    '/whole_pack' not in i and '/brush_armadillo' not in i and \
+                    '/bullseye' not in i and '/read_power_of_chiseled_bookshelf' not in i and \
+                    '/very_very_frightening' not in i and '/arbalistic'not in i and \
+                    '/whos_the_pillager_now' not in i and '/spyglass_at_ghast' not in i and \
+                    '/return_to_sender' not in i and \
+                    '/spyglass_at_dragon' not in i:
+                    if(not self._advancements[i].printed()):
+                        self._advancements[i].print_for_spreadsheet()
+        self._advancements['minecraft:husbandry/obtain_sniffer_egg'].print_for_spreadsheet()
+        self._advancements['blazeandcave:adventure/truffle_worm'].print_for_spreadsheet()
+        self._advancements['blazeandcave:adventure/evelyn_evergreen'].print_for_spreadsheet()
+        self._advancements['blazeandcave:adventure/awards_ceremony'].print_for_spreadsheet()
+        self._advancements['minecraft:husbandry/complete_catalogue'].print_for_spreadsheet()
+        self._advancements['minecraft:husbandry/allay_deliver_item_to_player'].print_for_spreadsheet()
+        self._advancements['minecraft:husbandry/allay_deliver_cake_to_note_block'].print_for_spreadsheet()
+        self._advancements['minecraft:husbandry/plant_any_sniffer_seed'].print_for_spreadsheet()
+        self._advancements['minecraft:husbandry/feed_snifflet'].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Redstone 47  @@@ @@@ ")
+        self._advancements['blazeandcave:redstone/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':redstone/' in i or ':redstone/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+        self._advancements['minecraft:adventure/bullseye'].print_for_spreadsheet()
+        self._advancements['minecraft:adventure/read_power_of_chiseled_bookshelf'].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Enchanting 51 @@@ @@@ ")
+        self._advancements['blazeandcave:enchanting/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':enchanting/' in i or ':enchanting/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+        self._advancements['minecraft:adventure/very_very_frightening'].print_for_spreadsheet()
+        self._advancements['minecraft:adventure/arbalistic'].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Statistics 58 -60 @@@ @@@ ")
+        self._advancements['blazeandcave:statistics/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':statistics/' in i or ':statistics/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Nether 106 -107 @@@ @@@ ")
+        self._advancements['minecraft:nether/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':nether/' in i or ':nether/' in self._advancements[i]._parent:
+                if '/a_much_more_doable_challenge' not in i and '/a_furious_test_subject' not in i and \
+                    '/all_effects' not in i and '/all_potions' not in i:
+                    self._advancements[i].print_for_spreadsheet()
+        self._advancements['minecraft:adventure/spyglass_at_ghast'].print_for_spreadsheet()
+        self._advancements['minecraft:nether/return_to_sender'].print_for_spreadsheet()
+        self._advancements['minecraft:story/enter_the_end'].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Potion 27  @@@ @@@ ")
+        self._advancements['blazeandcave:potion/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':potion/' in i or ':potion/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+        self._advancements['minecraft:nether/all_potions'].print_for_spreadsheet()
+
+        print(f" @@@ @@@ End 43 -44  @@@ @@@ ")
+        self._advancements['minecraft:end/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':end/' in i or ':end/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+        self._advancements['minecraft:adventure/spyglass_at_dragon'].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Challenges 38 -39  @@@ @@@ ")
+        self._advancements['blazeandcave:challenges/root'].print_for_spreadsheet()
+        for i in self._advancements:
+            if ':challenges/' in i or ':challenges/' in self._advancements[i]._parent:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
+
+        print(f" @@@ @@@ Non-Characterized  @@@ @@@ ")
+
+        for i in self._advancements:
+            if ':technical/' not in i:
+                if(not self._advancements[i].printed()):
+                    self._advancements[i].print_for_spreadsheet()
 #        self._advancements['minecraft:end/levitate'].print_advancement()
 
     def print_last_datetime(self):
@@ -221,8 +385,9 @@ class AllAdvancements():
     def print_number_of_completed(self):
         num_completed=0
         for i in self._advancements:
-            if self._advancements[i]._completed:
-                num_completed = num_completed+1
+            if ':technical/' not in i and '/obtain_netherite_hoe' not in i:
+                if self._advancements[i]._completed:
+                    num_completed = num_completed+1
         print(f"{num_completed}")
 
 
@@ -237,11 +402,11 @@ def main(aghudconfig):
     aa = AllAdvancements(aghudconfig)
     aa.update_advancements(aghudconfig.uuidjson())
 
-    newlist=[]
-    newlist = aa.advancement_list('')
-    print(len(newlist))
-    for i in newlist:
-        print(f':{i}-{aa.advancement_title(i)}')
+#    newlist=[]
+#    newlist = aa.advancement_list('')
+#    print(len(newlist))
+#    for i in newlist:
+#        print(f':{i}-{aa.advancement_title(i)}')
     aa.print_advancements()
     aa.print_last_datetime()
     aa.print_number_of_completed()
