@@ -38,6 +38,7 @@ class Advancement():
         self._requirement = self.REQUIREMENT_ALL
         self._completed_datetime = "2010-01-01 00:00:00 +0900"
         self._printed = False
+        self._has_trophy = False
 
     def parse_filename(self, filename):
         x = filename[:-5].rstrip().split("/")[::-1]
@@ -127,9 +128,14 @@ class Advancement():
     def set_printed(self,printed):
         self._printed = printed
 
+    def has_trophy(self,trophy):
+        self._has_trophy = trophy
+
     def print_for_spreadsheet(self):
         if(not self.printed()):
-            print(f"{self._completed} @@@ {self._title} @@@ {self._index} @@@ {self._completed_datetime[:-5]} @@@ {self._parent}")
+#            print(f"{self._completed} @@@ {self._title} @@@ {self._index} @@@ {self._completed_datetime[:-5]} @@@ {self._parent} @@@ {self._has_trophy}")
+            if(self._completed and self._has_trophy):
+                print(f"{self._completed} @@@ {self._title} @@@ {self._index} @@@ {self._completed_datetime[:-5]} @@@ {self._has_trophy}")
             self.set_printed(True)
 
 class AllAdvancements():
@@ -139,6 +145,7 @@ class AllAdvancements():
 
         self._advancements={}
         self._last_datetime = "2010-01-01 00:00:00 +0900"
+        trophies={}
 
         # Check the advancement directory
         if Path(f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}").is_dir():
@@ -154,11 +161,20 @@ class AllAdvancements():
         if Path(f"./ag/advancements/{aghudconfig.advancementversion()}").is_dir():
             advancementdirs = glob.glob(f"./ag/advancements/{aghudconfig.advancementversion()}/**/advancements", recursive=True)
 
+        if Path(f"./ag/advancements/{aghudconfig.advancementversion()}/data/bc_rewards/functions/trophy").is_dir():
+            trophydirs = f"./ag/advancements/{aghudconfig.advancementversion()}/data/bc_rewards/functions/trophy"
+            trophies = glob.glob(f"{trophydirs}/**/*.mcfunction")
+#        print(len(trophies))
+
         for advancementdir in advancementdirs:
             jsonfiles = glob.glob(f"{advancementdir}/**/*.json", recursive=True)
             for jsonfile in jsonfiles:
                 advancement = Advancement(jsonfile)
                 advancement.read_advancement()
+                for trophy in trophies:
+                    if(advancement._name in trophy):
+                        advancement.has_trophy(True)
+                        break
                 self._advancements[advancement.index()] = advancement
 #        print(len(self._advancements))
 
