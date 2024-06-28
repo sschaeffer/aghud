@@ -42,7 +42,7 @@ class Advancement():
 
     def parse_filename(self, filename):
         x = filename[:-5].rstrip().split("/")[::-1]
-        y = x.index('advancements')
+        y = x.index('advancement')
         z = x[y-1::-1] 
         self._name = "/"
         self._name = self._name.join(z)
@@ -159,10 +159,10 @@ class AllAdvancements():
                 self._useradvancementsdir = f"{aghudconfig.minecraftdir()}/saves/{aghudconfig.worldname()}/advancements"
 
         if Path(f"./ag/advancements/{aghudconfig.advancementversion()}").is_dir():
-            advancementdirs = glob.glob(f"./ag/advancements/{aghudconfig.advancementversion()}/**/advancements", recursive=True)
+            advancementdirs = glob.glob(f"./ag/advancements/{aghudconfig.advancementversion()}/**/advancement", recursive=True)
 
         if Path(f"./ag/advancements/{aghudconfig.advancementversion()}/data/bc_rewards/functions/trophy").is_dir():
-            trophydirs = f"./ag/advancements/{aghudconfig.advancementversion()}/data/bc_rewards/functions/trophy"
+            trophydirs = f"./ag/advancements/{aghudconfig.advancementversion()}/data/bc_rewards/function/trophy"
             trophies = glob.glob(f"{trophydirs}/**/*.mcfunction")
 #        print(len(trophies))
 
